@@ -13,12 +13,14 @@ def home():
 @app.route('/upload', methods=['POST'])
 def upload():
     file = request.files['file']
-    file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-    return 'File uploaded successfully! <a href="/">Go back</a>'
+    if file:
+        file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+        return 'File uploaded successfully! <a href="/">Go back</a>'
+    return 'No file selected. <a href="/">Go back</a>'
 
 @app.route('/download/<filename>')
 def download(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
